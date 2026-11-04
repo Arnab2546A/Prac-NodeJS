@@ -24,5 +24,11 @@ app.delete('/notes/:index',(req,res)=>{
     delete notes[idx];
     res.send('note deleted successfully')
 })
+
+app.patch('/notes/:index',(req,res)=>{
+    const idx=req.params.index;
+    notes[idx].description=req.body.description;
+    res.send('note description updated successfully')
+})
 console.log(notes)
 module.exports=app;
