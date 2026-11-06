@@ -1,21 +1,28 @@
 const express=require('express')
 const app=express();
-
-console.log('zzzzzzz')
-console.log(express.json())
+const noteModel=require('./models/note.model')
 app.use(express.json())
-const notes=[];
-app.post('/notes',(req,res)=>{
-    notes.push(req.body);
+
+
+app.post('/notes',async (req,res)=>{
+    const data=req.body;
+   await noteModel.create({
+        title:data.title,
+        description:data.description,
+    })
     res.status(201).json({
-        message:'new note pushed'
+        message:'new note created'
     })
     
 })
 
 
-app.get('/notes',(req,res)=>{
-    res.status(200).json(notes)
+app.get('/notes',async (req,res)=>{
+    const notes=await noteModel.find();
+    res.status(200).json({
+        message:"notes fetched successfully",
+        notes:notes
+    })
 })
 
 
@@ -30,5 +37,4 @@ app.patch('/notes/:index',(req,res)=>{
     notes[idx].description=req.body.description;
     res.send('note description updated successfully')
 })
-console.log(notes)
 module.exports=app;
