@@ -16,6 +16,23 @@ app.post('/notes',async (req,res)=>{
     
 })
 
+app.delete('/notes/:idx',async(req,res)=>{
+    const idx=req.params.idx;
+    await noteModel.findOneAndDelete({_id:idx});
+    res.status(200).json({
+        message:"note deleted successfully"
+    })
+})
+
+app.patch('/notes/:idx',async(req,res)=>{
+    const idx=req.params.idx;
+    await noteModel.findOneAndUpdate({_id:idx},{
+        description:req.body.description
+    })
+    res.status(200).json({
+        message:"note updated successully"
+    })
+})
 
 app.get('/notes',async (req,res)=>{
     const notes=await noteModel.find();
@@ -26,15 +43,4 @@ app.get('/notes',async (req,res)=>{
 })
 
 
-app.delete('/notes/:index',(req,res)=>{
-    const idx=req.params.index;
-    delete notes[idx];
-    res.send('note deleted successfully')
-})
-
-app.patch('/notes/:index',(req,res)=>{
-    const idx=req.params.index;
-    notes[idx].description=req.body.description;
-    res.send('note description updated successfully')
-})
 module.exports=app;
