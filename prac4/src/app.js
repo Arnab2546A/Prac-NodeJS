@@ -10,5 +10,4 @@ app.get('/',(req,res)=>{
 })
 
 app.use('/notes',notesRoute)
-
 module.exports=app;
